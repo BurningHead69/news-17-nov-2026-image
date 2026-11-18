@@ -51,9 +51,18 @@ one-line briefs from around the world. Text is drawn with real fonts, not
 generated, so there is no garbled wording anywhere; the smallest type is
 16 px at 1024 px wide, still readable when the image is shown small.
 
+The four photographs are AI-generated illustrations of the reported
+scenes (a burning tanker, a damaged sea bridge, a flooded tent camp, a
+climate conference hall) — they illustrate what the reports described;
+they are not photographs of the actual events. The summit panel keeps
+drawn flags instead of generated faces of real leaders.
+
 ## Files
 
-- `entry.png` — the image (1024x1024, ~120 KiB).
+- `entry.png` — the image (1024x1024, ~547 KiB).
+- `photo_hero.jpg`, `photo_ukraine.jpg`, `photo_gaza.jpg`,
+  `photo_climate.jpg` — the AI-generated illustrations the script crops
+  into the hero and panel slots (960 px wide, JPEG).
 - `main.ts` — copies `entry.png` to the output directory; deterministic.
 - `draw_news.py` — the Pillow script that drew `entry.png` from scratch.
   Run it again and the bytes are identical.
