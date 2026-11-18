@@ -65,13 +65,6 @@ def rule(d, x, y, w, width=2, fill=INK):
     d.line([(x, y), (x + w, y)], fill=fill, width=width)
 
 
-def paste_illo(img, fn, x, y, w, h):
-    """Draw fn on its own layer, then paste: clipped to the box, never over."""
-    layer = Image.new("RGB", (w, h), PAPER)
-    fn(ImageDraw.Draw(layer), 0, 0, w, h)
-    img.paste(layer, (x, y))
-
-
 def fit_photo(path, w, h, y_bias=0.5):
     """Crop a photo to the slot's aspect (vertical bias picks the band),
     then resize to the slot. Deterministic: same file, same bytes."""
@@ -91,48 +84,15 @@ def fit_photo(path, w, h, y_bias=0.5):
 
 # ---------------------------------------------------------------- illustrations
 
-def illo_summit(d, x, y, w, h):
-    """Three flags side by side: United States, China, Russia."""
-    d.rectangle([x, y, x + w, y + h], fill=(226, 230, 236))
-    fw, fh = 118, h - 20
-    top = y + 8
-    ux = x + 24
-    for i in range(7):
-        d.rectangle([ux, top + i * (fh // 7), ux + fw, top + (i + 1) * (fh // 7) + 1],
-                    fill=(178, 34, 52) if i % 2 == 0 else (245, 245, 240))
-    d.rectangle([ux, top, ux + 48, top + fh * 4 // 7], fill=(28, 48, 96))
-    for r in range(3):
-        for c in range(4):
-            d.ellipse([ux + 6 + c * 11, top + 4 + r * 10, ux + 11 + c * 11, top + 9 + r * 10],
-                      fill=(245, 245, 240))
-    cx = x + w // 2 - fw // 2
-    d.rectangle([cx, top, cx + fw, top + fh], fill=(222, 41, 16))
-    d.polygon([(cx + 16, top + 6), (cx + 20, top + 15), (cx + 29, top + 15),
-               (cx + 22, top + 21), (cx + 25, top + 30), (cx + 16, top + 25),
-               (cx + 7, top + 30), (cx + 10, top + 21), (cx + 3, top + 15),
-               (cx + 12, top + 15)], fill=(255, 222, 0))
-    for sx, sy in [(cx + 42, top + 10), (cx + 52, top + 18), (cx + 48, top + 32)]:
-        d.ellipse([sx, sy, sx + 7, sy + 7], fill=(255, 222, 0))
-    rx = x + w - 24 - fw
-    for i, c in enumerate([(245, 245, 240), (0, 57, 166), (213, 0, 50)]):
-        d.rectangle([rx, top + i * (fh // 3), rx + fw, top + (i + 1) * (fh // 3) + 1], fill=c)
-    for fx in (ux, cx, rx):
-        d.rectangle([fx, top, fx + fw, top + fh], outline=(60, 60, 60), width=2)
-        d.line([(fx + fw // 2, top + fh), (fx + fw // 2, y + h - 4)], fill=(90, 86, 78), width=3)
-
-
 # ---------------------------------------------------------------- layout
 
 PHOTO_H = 96
 
 
-def story_panel(img, d, x, y, w, h, kicker, headline, deck, photo=None,
-                photo_bias=0.5, illo=None):
+def story_panel(img, d, x, y, w, h, kicker, headline, deck, photo,
+                photo_bias=0.5):
     d.rectangle([x, y, x + w, y + h], outline=INK, width=2)
-    if photo:
-        img.paste(fit_photo(photo, w - 4, PHOTO_H, photo_bias), (x + 2, y + 2))
-    else:
-        paste_illo(img, illo, x + 2, y + 2, w - 4, PHOTO_H)
+    img.paste(fit_photo(photo, w - 4, PHOTO_H, photo_bias), (x + 2, y + 2))
     ty = y + PHOTO_H + 8
     d.text((x + 16, ty), kicker, font=font(SANS_B, 17), fill=RED)
     ty += 26
@@ -188,7 +148,7 @@ def main():
     story_panel(img, d, mx + pw + 24, y3, pw, rh3, "DIPLOMACY",
                 "TRUMP, XI AND PUTIN TO MEET IN SHENZHEN",
                 "First trilateral summit of the three leaders, Thursday at APEC.",
-                illo=illo_summit)
+                photo="photo_summit.jpg", photo_bias=0.25)
 
     # briefs: ten more stories from the day, two columns, one line each
     by = 892
