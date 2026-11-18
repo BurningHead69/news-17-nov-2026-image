@@ -12,9 +12,14 @@ Stories (all reported on Tuesday 17 November 2026):
   panel  Winter rain floods Gaza shelters; UN warns crisis worsens
   panel  COP31 draft: faster fossil-fuel phase-out, $120bn climate finance
   panel  Trump, Xi and Putin to meet Thursday in Shenzhen
-  strip  US loses measles-free status; Wall Street falls; Japan scrambles jets;
-         India beat Pakistan in the U-19 Asia Cup final
+  briefs Lebanon airstrikes; Houthi drones at a Saudi pipeline; Trump heeds
+         the 'dirty-bomb' report; Oman evacuates 24 seafarers; US loses
+         measles-free status; Wall Street falls; Japan scrambles jets;
+         India beat Pakistan in the U-19 Asia Cup final; Depardieu admits
+         sex-assault charge; UK sanctions firms blocking Gaza aid
 """
+
+from PIL import Image, ImageDraw, ImageFont
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -79,7 +84,7 @@ def illo_hormuz(d, x, y, w, h):
     for i in range(5):
         yy = hy + 14 + i * 14
         d.line([(x + 20 + i * 37, yy), (x + 150 + i * 37, yy)], fill=(52, 110, 122), width=3)
-    tx, ty = x + 60, hy - 52
+    tx, ty = x + 60, hy - 40
     d.rectangle([tx, ty, tx + 330, ty + 52], fill=(12, 12, 12))
     d.rectangle([tx + 250, ty - 34, tx + 300, ty], fill=(230, 230, 220))
     for i, c in enumerate([(178, 52, 40), (201, 138, 27), (22, 90, 90)]):
@@ -149,7 +154,7 @@ def illo_gaza(d, x, y, w, h):
 def illo_climate(d, x, y, w, h):
     """Globe with a leaf, and a rising arrow: the COP31 climate deal."""
     d.rectangle([x, y, x + w, y + h], fill=(208, 232, 224))
-    cx, cy, r = x + w // 2 - 20, y + h // 2 + 6, 30
+    cx, cy, r = x + w // 2 - 20, y + h // 2 + 2, int(h * 0.4)
     d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(28, 110, 150))
     d.ellipse([cx - r + 8, cy - r + 8, cx - r + 26, cy - r + 22], fill=(74, 160, 96))
     d.ellipse([cx + 2, cy + 4, cx + 24, cy + 20], fill=(74, 160, 96))
@@ -195,7 +200,7 @@ def illo_summit(d, x, y, w, h):
 
 # ---------------------------------------------------------------- layout
 
-ILLO_H = 78
+ILLO_H = 64
 
 
 def story_panel(img, d, x, y, w, h, kicker, headline, deck, illo):
@@ -204,8 +209,8 @@ def story_panel(img, d, x, y, w, h, kicker, headline, deck, illo):
     ty = y + ILLO_H + 10
     d.text((x + 16, ty), kicker, font=font(SANS_B, 17), fill=RED)
     ty += 26
-    ty = para(d, x + 16, ty, headline, font(SERIF_B, 23), INK, w - 32, 27)
-    para(d, x + 16, ty + 4, deck, font(SANS, 17), (52, 48, 42), w - 32, 21)
+    ty = para(d, x + 16, ty, headline, font(SERIF_B, 23), INK, w - 32, 26)
+    para(d, x + 16, ty + 4, deck, font(SANS, 17), (52, 48, 42), w - 32, 20)
 
 
 def main():
@@ -221,7 +226,7 @@ def main():
     rule(d, mx, 146, W - 2 * mx, width=2)
 
     # hero: illustration left, headline right
-    hx, hy, hw, hh = mx, 158, W - 2 * mx, 280
+    hx, hy, hw, hh = mx, 156, W - 2 * mx, 250
     d.rectangle([hx, hy, hx + hw, hy + hh], outline=INK, width=2)
     paste_illo(img, illo_hormuz, hx + 2, hy + 2, 480, hh - 4)
     tx = hx + 504
@@ -230,12 +235,12 @@ def main():
     y = para(d, tx, hy + 44, "U.S. STRIKES IRAN AS TANKER BURNS IN HORMUZ",
              font(SERIF_B, 38), INK, tw, 45)
     para(d, tx, y + 10,
-         "A fourth tanker is hit by a mine in a day. U.S. jets hit a missile site "
-         "on Qeshm Island. Oman evacuates 24 seafarers.",
+         "A fourth tanker is hit by a mine; U.S. jets strike a missile site "
+         "on Qeshm Island.",
          font(SANS, 20), (52, 48, 42), tw, 26)
 
     # row 2
-    y2, rh2 = 450, 252
+    y2, rh2 = 416, 224
     pw = (W - 2 * mx - 24) // 2
     story_panel(img, d, mx, y2, pw, rh2, "UKRAINE",
                 "UKRAINE HITS CRIMEA BRIDGE; ZAPORIZHZHIA STRUCK",
@@ -247,7 +252,7 @@ def main():
                 illo_gaza)
 
     # row 3
-    y3, rh3 = 714, 226
+    y3, rh3 = 650, 224
     story_panel(img, d, mx, y3, pw, rh3, "CLIMATE — COP31, ANTALYA",
                 "DRAFT DEAL: QUIT FOSSIL FUELS FASTER",
                 "Deal would raise climate finance for developing nations "
@@ -258,13 +263,33 @@ def main():
                 "First trilateral summit of the three leaders, Thursday at APEC.",
                 illo_summit)
 
-    # bottom strip
-    sy = 952
-    rule(d, mx, sy, W - 2 * mx, width=2)
-    para(d, mx, sy + 10,
-         "ALSO ON 17 NOV:  U.S. loses measles-free status  •  Wall Street falls  •  "
-         "Japan scrambles jets  •  India win U-19 Asia Cup final",
-         font(SANS_B, 18), INK, W - 2 * mx, 24)
+    # briefs: ten more stories from the day, two columns, one line each
+    by = 884
+    rule(d, mx, by, W - 2 * mx, width=2)
+    d.text((mx, by + 8), "AROUND THE WORLD — IN BRIEF",
+           font=font(SANS_B, 19), fill=RED)
+    briefs = [
+        ("LEBANON", "Israeli airstrikes hit the south"),
+        ("SAUDI ARABIA", "Houthi drones target a pipeline"),
+        ("WASHINGTON", "Trump heeds 'dirty-bomb' report"),
+        ("OMAN", "24 seafarers evacuated from burning tanker"),
+        ("MEASLES", "U.S. loses elimination status"),
+        ("MARKETS", "Wall Street falls as AI stocks slide"),
+        ("JAPAN", "Jets scrambled as Russian planes intrude"),
+        ("CRICKET", "India edge Pakistan in U-19 final"),
+        ("FRANCE", "Depardieu admits sex-assault charge"),
+        ("LONDON", "UK sanctions firms blocking Gaza aid"),
+    ]
+    lead_f, rest_f = font(SANS_B, 16), font(SANS, 16)
+    for i, (place, text) in enumerate(briefs):
+        col = i // 5
+        row = i % 5
+        bx = mx + col * (pw + 24)
+        byy = by + 36 + row * 20
+        lead = place + " — "
+        d.text((bx, byy), lead, font=lead_f, fill=INK)
+        d.text((bx + d.textlength(lead, font=lead_f), byy), text,
+               font=rest_f, fill=(52, 48, 42))
 
     img.save("entry.png", optimize=True)
 

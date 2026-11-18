@@ -25,11 +25,19 @@ was unverified, the image does not present it as fact.
 5. **Diplomacy.** The first trilateral summit of Donald Trump, Xi Jinping
    and Vladimir Putin was set for Thursday 19 November in Shenzhen, on the
    sidelines of the APEC leaders' meeting. Sources: AFP, Dawn.
-6. **Also on 17 November.** The United States lost its measles elimination
-   status (PAHO; 5,412 cases reported); Wall Street fell as AI and tech
-   stocks slid, with Nvidia in focus (AP); Japan scrambled fighter jets
-   after suspected Russian aircraft entered its airspace; India beat
-   Pakistan by one wicket off the last ball in the Under-19 Asia Cup final.
+6. **Around the world — in brief.** Israeli airstrikes and artillery fire
+   hit southern Lebanon; Houthi drones targeted Saudi Aramco pumping
+   stations on the East-West pipeline; Donald Trump said the US was taking
+   a reported Iranian "dirty-bomb" plot seriously and Iran denied it;
+   Oman evacuated 24 seafarers from the burning tanker; the United States
+   lost its measles elimination status (PAHO; 5,412 cases reported); Wall
+   Street fell as AI and tech stocks slid, with Nvidia in focus (AP);
+   Japan scrambled fighter jets after suspected Russian aircraft entered
+   its airspace; India beat Pakistan by one wicket off the last ball in
+   the Under-19 Asia Cup final; Gérard Depardieu admitted a sexual assault
+   charge and dropped his appeal; the UK sanctioned firms accused of
+   blocking aid into Gaza. Sources: Profile News, AP, PAHO, France 24 /
+   AFP.
 
 ## Why this design
 
@@ -38,13 +46,14 @@ so the image has to do all the work itself: the masthead names the day in
 full, every story carries its own picture and a headline a reader can
 understand without any outside context, and the stories span regions
 (Middle East, Europe, Asia) and beats (war, climate, diplomacy, health,
-markets, sport). Text is drawn with real fonts, not generated, so there is
-no garbled wording anywhere; the smallest type is 17 px at 1024 px wide,
-still readable when the image is shown small.
+markets, sport). Fifteen stories in total: a lead, four panels, and ten
+one-line briefs from around the world. Text is drawn with real fonts, not
+generated, so there is no garbled wording anywhere; the smallest type is
+16 px at 1024 px wide, still readable when the image is shown small.
 
 ## Files
 
-- `entry.png` — the image (1024x1024, ~103 KiB).
+- `entry.png` — the image (1024x1024, ~120 KiB).
 - `main.ts` — copies `entry.png` to the output directory; deterministic.
 - `draw_news.py` — the Pillow script that drew `entry.png` from scratch.
   Run it again and the bytes are identical.
